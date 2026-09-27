@@ -57,7 +57,7 @@ while True:
 
       
 
-    elif opcion == 2:
+  elif opcion == 2:
       if len(Inventario) == 0:
         print("El inventario esta vacio.")
       else:
@@ -67,7 +67,7 @@ while True:
         print(f"Cantidad: {producto['cantidad']}")
         print(f"Precio: {producto['precio']}")
 
-    elif opcion == 3:
+  elif opcion == 3:
         nombre = input("Ingrese el nombre del producto a buscar: ")
         producto_encontrado = False
   
@@ -81,7 +81,7 @@ while True:
         if not producto_encontrado:
             print("Producto no encontrado.")
 
-    elif opcion == 4:
+  elif opcion == 4:
       producto_encontrado = False
       print("\n---Productos de bajo stock------")
       for producto in Inventario:
@@ -93,29 +93,53 @@ while True:
         print("No hay productos de bajo stock.")
 
   elif opcion == 5:
-    for venta in Ventas:
-      print(venta)
+    if len(Ventas) == 0:
+      print("No han habido ventas en el dia.")
+    else:
+      print("\n---Ventas del dia------")
+      for venta in Ventas:
+        print(f"Producto: {venta["nombre"]}")
+        print(f"Cantidad: {venta["cantidad"]}")
+        print(f"Total: {venta["total"]}")
 
   elif opcion == 6:
     nombre = input("Ingrese el nombre del producto a vender: ")
-    cantidad = int(input("Ingrese la cantidad a vender: "))
+    try:
+      cantidad = int(input("Ingrese la cantidad a vender: "))
+      if cantidad <= 0:
+        print("La cantidad a vender debe ser mayor a 0.")
+        continue
+    except ValueError:
+        print("Error, la cantidad tiene que ser un numero entero.")
+        continue
+    existe_en_inventario = False
     for producto in Inventario:
       if producto["nombre"] == nombre:
+
+        existe_en_inventario = True
+
         if producto["cantidad"] >= cantidad:
           producto["cantidad"] -= cantidad
+          total = cantidad * producto["precio"]
           venta = {
-            "nombre": nombre,
+            "nombre": producto["nombre"],
             "cantidad": cantidad,
             "precio": producto["precio"],
-            "total": cantidad * producto["precio"]
+            "total": total
             }
           Ventas.append(venta)
           print("Venta realizada con exito.")
+        else:
+          print("No hay suficiente stock para realizar la venta.")
+        if not existe_en_inventario:
+          print("El producto no existe en el inventario.")
+
   elif opcion == 7:
     total_vendido = 0
+  
     for venta in Ventas:
       total_vendido += venta["total"]
-    print(f"El total vendido en el dia es: {total_vendido}")
+    print(f"El total vendido en el dia es: ${total_vendido}")
 
   elif opcion == 8:
     print("Gracias por usar el sistema")
