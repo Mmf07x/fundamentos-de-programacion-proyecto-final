@@ -52,25 +52,45 @@ while True:
         "precio": precio
         })
       print(f"Producto {nombre} agregado al inventario con exito. ")
-      print(f"Cantidad: {cantidad})
+      print(f"Cantidad: {cantidad}")
       print(f"Precio: {precio}")
 
       
 
-  elif opcion == 2:
-    for producto in Inventario:
-      print(producto)
+    elif opcion == 2:
+      if len(Inventario) == 0:
+        print("El inventario esta vacio.")
+      else:
+          print("\n---Inventario------")
+      for producto in Inventario:
+        print(f"Producto: {producto['nombre']}")
+        print(f"Cantidad: {producto['cantidad']}")
+        print(f"Precio: {producto['precio']}")
 
-  elif opcion == 3:
-    nombre = input("Ingrese el nombre del producto a buscar: ")
-    for producto in Inventario:
-       if producto["nombre"] == nombre:
-        print(producto)
+    elif opcion == 3:
+        nombre = input("Ingrese el nombre del producto a buscar: ")
+        producto_encontrado = False
+  
+        for producto in Inventario:
+            if producto["nombre"] == nombre:
+                print("\nProducto encontrado:")
+                print(f"Producto: {producto['nombre']}")
+                print(f"Cantidad: {producto['cantidad']}")
+                print(f"Precio: {producto['precio']}")
+                producto_encontrado = True
+        if not producto_encontrado:
+            print("Producto no encontrado.")
 
-  elif opcion == 4:
-    for producto in Inventario:
-      if producto["cantidad"] < 10:
-        print(producto)
+    elif opcion == 4:
+      producto_encontrado = False
+      print("\n---Productos de bajo stock------")
+      for producto in Inventario:
+        if producto["cantidad"] <= 5:
+          print(f"Producto: {producto['nombre']}")
+          print(f"Cantidad: {producto['cantidad']}")
+          producto_encontrado = True
+      if not producto_encontrado:
+        print("No hay productos de bajo stock.")
 
   elif opcion == 5:
     for venta in Ventas:
