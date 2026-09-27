@@ -1,7 +1,9 @@
+existe_en_inventario = False
 Inventario = []
 Ventas = []
 while True:
-  opcion = int(input(
+  try:
+    opcion = int(input(
         "\n1. Agregar producto"
         "\n2. Consultar inventario"
         "\n3. Buscar producto"
@@ -11,11 +13,49 @@ while True:
         "\n7. Ver total vendido en el dia"
         "\n8. Salir"
         "\n\nSeleccione una opcion: "))
+  except ValueError:
+    print("Por favor, ingrese un numero valido.")
+    continue
+
   if opcion == 1:
       nombre = input("Ingrese el nombre del producto: ")
+
+      if nombre == "":
+        print("El nombre del producto no puede estar vacio.")
+        continue
+
+      existe_en_inventario = False
+      for producto in Inventario:
+        if producto["nombre"] == nombre:
+          print("El producto ya existe en el inventario.")
+          existe_en_inventario = True
+
+      if existe_en_inventario:
+        print("El producto ya existe en el inventario.")
+        continue
+    try:
       cantidad = int(input("Ingrese la cantidad del producto: "))
+      if cantidad < 0:
+        print("La cantidad no puede ser menor que 0.")
+        continue
+
       precio = float(input("Ingrese el precio del producto: "))
-      Inventario.append({"nombre": nombre, "cantidad": cantidad, "precio": precio})
+      if precio <= 0:
+        print("El precio si o si tiene que ser mayor a 0")
+        continue
+    except ValueError:
+      print("ingrese un numero valido.")
+      continue  
+      Inventario.append({
+        "nombre": nombre, 
+        "cantidad": cantidad, 
+        "precio": precio
+        })
+      print(f"Producto {nombre} agregado al inventario con exito. ")
+      print(f"Cantidad: {cantidad})
+      print(f"Precio: {precio}")
+
+      
 
   elif opcion == 2:
     for producto in Inventario:
