@@ -13,16 +13,13 @@ while True:
         "\n7. Ver total vendido en el dia"
         "\n8. Salir"
         "\n\nSeleccione una opcion: "))
-  except TypeError:
-    print("Por favor, ingrese un numero valido.")
+  except ValueError:
+    print("Error, tiene que ingresar un numero entero.")
+    continue
     
 
   if opcion == 1:
-    try:
-      nombre = input("Ingrese el nombre del producto: ")
-    except TypeError:
-      print("Error, el nombre del producto debe ser un string.")
-      
+      nombre = input("Ingrese el nombre del producto: ")      
 
       if nombre == "":
         print("El nombre del producto no puede estar vacio.")
@@ -31,10 +28,10 @@ while True:
       existe_en_inventario = False
       for producto in Inventario:
         if producto["nombre"] == nombre:
-          print("El producto ya existe en el inventario.")
           existe_en_inventario = True
 
       if existe_en_inventario:
+        print("El producto ya existe en el inventario.")
         continue
 
       try:
@@ -47,7 +44,7 @@ while True:
           if precio <= 0:
             print("El precio si o si tiene que ser mayor a 0")
             continue
-      except TypeError:
+      except ValueError:
           print("Ingrese un numero valido.")
           continue
 
@@ -62,13 +59,14 @@ while True:
 
   elif opcion == 2:
     if len(Inventario) == 0:
-      print("No hay productos en el inventario.")
+      print("No hay nada en el inventario.")
     else:
       print("\n---Inventario------")
       for producto in Inventario:
         print(f"Producto: {producto['nombre']}")
         print(f"Cantidad: {producto['cantidad']}")
         print(f"Precio: {producto['precio']}")
+        print("--------------------")
 
  
 
@@ -76,77 +74,94 @@ while True:
 
 
   elif opcion == 3:
-    try:
-      nombre = input("Ingrese el nombre del producto a buscar: ")
-    except TypeError:
-      print("Error, el nombre del producto debe ser un string.")
       
+      nombre = input("Ingrese el nombre del producto a buscar: ")      
 
-    producto_encontrado = False
+      producto_encontrado = False
 
-    for producto in Inventario:
-      if producto["nombre"] == nombre:
-        print("\nProducto encontrado:")
-        print(f"Producto: {producto['nombre']}")
-        print(f"Cantidad: {producto['cantidad']}")
-        print(f"Precio: {producto['precio']}")
-        producto_encontrado = True
+      for producto in Inventario:
+        if producto["nombre"] == nombre:
+          print("\nProducto encontrado:")
+          print(f"Producto: {producto['nombre']}")
+          print(f"Cantidad: {producto['cantidad']}")
+          print(f"Precio: {producto['precio']}")
+          producto_encontrado = True
 
-    if not producto_encontrado:
-      print("Producto no encontrado.")
+      if not producto_encontrado:
+        print("Producto no encontrado.")
 
   elif opcion == 4:
     producto_encontrado = False
+
     print("\n---Productos de bajo stock------")
+
     for producto in Inventario:
+
       if producto["cantidad"] <= 5:
         print(f"Producto: {producto['nombre']}")
         print(f"Cantidad: {producto['cantidad']}")
+        print("--------------------")
         producto_encontrado = True
     if not producto_encontrado:
       print("No hay productos de bajo stock.")
 
   elif opcion == 5:
     if len(Ventas) == 0:
+
       print("No han habido ventas en el dia.")
+
     else:
       print("\n---Ventas del dia------")
+
       for venta in Ventas:
         print(f"Producto: {venta['nombre']}")
         print(f"Cantidad: {venta['cantidad']}")
         print(f"Total: {venta['total']}")
 
   elif opcion == 6:
-    try:
-      nombre = input("Ingrese el nombre del producto a vender: ")
-    except TypeError:
-      print("Error, el nombre del producto debe ser un string.")
+      
+    nombre = input("Ingrese el nombre del producto a vender: ")
       
     try:
       cantidad = int(input("Ingrese la cantidad a vender: "))
+
       if cantidad <= 0:
+
         print("La cantidad a vender debe ser mayor a 0.")
-        
-    except TypeError:
+        continue
+
+    except ValueError:
         print("Error, la cantidad tiene que ser un numero entero.")
-        
+        continue
+    
     existe_en_inventario = False
+
     for producto in Inventario:
+
       if producto["nombre"] == nombre:
 
         existe_en_inventario = True
 
         if producto["cantidad"] >= cantidad:
+
           producto["cantidad"] -= cantidad
+
           total = cantidad * producto["precio"]
+
           venta = {
             "nombre": producto["nombre"],
             "cantidad": cantidad,
             "precio": producto["precio"],
             "total": total
-            }
+          }
+
           Ventas.append(venta)
           print("Venta realizada con exito.")
+          print(f"Producto: {producto["nombre"]}")
+          print(f"Cantidad: {cantidad}")
+          print(f"Precio original: ${producto["precio"]}")
+          print(f"Total de la venta: ${total}")
+
         else:
           print("No hay suficiente stock para realizar la venta.")
         
@@ -158,7 +173,7 @@ while True:
   
     for venta in Ventas:
       total_vendido += venta["total"]
-    print(f"El total vendido en el dia es: ${total_vendido}")
+    print(f"/nEl total vendido en el dia es: ${total_vendido}")
 
   elif opcion == 8:
     print("Gracias por usar el sistema")
@@ -166,4 +181,4 @@ while True:
     break
 
   else:
-    print("Opcion no valida")
+    print("Opcion no valida tiene que ser del 1 al 8")
